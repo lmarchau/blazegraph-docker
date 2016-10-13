@@ -1,5 +1,7 @@
 FROM maven:latest
-MAINTAINER Luc Marchaud <luc.marchaud@gperfect-memory.com>
+MAINTAINER Luc M. <luc.marchaud@gmail.com>
+
+RUN apt-get update && apt-get install net-tools less
 
 WORKDIR /opt
 RUN git clone -b BLAZEGRAPH_RELEASE_2_1_4 \
@@ -7,9 +9,9 @@ RUN git clone -b BLAZEGRAPH_RELEASE_2_1_4 \
 							https://github.com/blazegraph/database.git \
 							blazegraph
 
-RUN export JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,address=5005,suspend=n -ea -Xmx4g -server"
+ENV JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,address=5005,suspend=n -ea -Xmx4g -server"
 
 WORKDIR /opt/blazegraph
 RUN /opt/blazegraph/scripts/mavenInstall.sh
 
-ENTRYPOINT ["/opt/blazegraph/scripts/startBlazegraph.sh"]""]
+ENTRYPOINT ["/opt/blazegraph/scripts/startBlazegraph.sh"]
